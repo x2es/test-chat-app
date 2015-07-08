@@ -2,17 +2,16 @@
 var PORT = 14545;
 
 var WSServer = require('ws').Server;
+var ChatRoom = require('./lib/chat_room.js');
+var WSFacade = require('./lib/transport/ws_facade.js');
+var Peer = require('./lib/peer.js');
 
 var wss = new WSServer({ port: PORT });
 
-var insp = require('util').inspect;
+var chatRoom = new ChatRoom();
 
 wss.on('connection', function(ws) {
-  debugger;
-  console.log('ws connection', insp(ws));
-  // ws.on('message', function() {
-  //   console.log('ws message', JSON.parse(arguments[0]), arguments); 
-  // });
+  chatRoom.invite(new Peer(new WSFacade(ws)));
 });
 
 console.log('listen on port:', PORT);

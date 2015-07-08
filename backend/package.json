@@ -4,6 +4,7 @@
   "description": "Test task by Konstantin Ivanov",
   "main": "chat-server.js",
   "scripts": {
+    "start": "node chat-server.js",
     "test": "./node_modules/.bin/mocha ./spec/**"
   },
   "keywords": [
