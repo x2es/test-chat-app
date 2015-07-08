@@ -15,13 +15,13 @@ describe('ChatRoom', function() {
 
     it('should invite specified peer', function() {
       var nop = function() {};
-      var transport = { 
+      var endpoint = { 
         onDisconnected: nop,
         onMessage: nop
       };
 
-      var peer1 = new Peer(transport);
-      var peer2 = new Peer(transport);
+      var peer1 = new Peer(endpoint);
+      var peer2 = new Peer(endpoint);
 
       expect(chatRoom.isMember(peer1)).equal(false, 'case 0.1');
       expect(chatRoom.isMember(peer2)).equal(false, 'case 0.2');
@@ -37,17 +37,17 @@ describe('ChatRoom', function() {
 
     it('should dismiss disconnected peer', function() {
       var disconnectHandler = null;
-      var transport = {
+      var endpoint = {
         onDisconnected: function(handler) {
           disconnectHandler = handler;
         },
         onMessage: function() {}
       };
 
-      var peer = new Peer(transport);
+      var peer = new Peer(endpoint);
       chatRoom.invite(peer);
       
-      disconnectHandler.apply(transport);
+      disconnectHandler.apply(endpoint);
 
       expect(chatRoom.isMember(peer)).not.ok;
 
@@ -104,11 +104,4 @@ describe('ChatRoom', function() {
       expect(ep1.send.callCount).equal(0);
     });
   });
-
-  // NOTE: tested by "broadcast" section
-  //       better to test it separately
-  // describe('incomming message', function() {
-  //   it('should broadcast incomming message');
-  // });
-
 });

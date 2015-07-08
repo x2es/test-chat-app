@@ -1,5 +1,8 @@
 
 /**
+ * Adapt websockets/ws API to application conventions.
+ * Represents peer's endpoint over websockets/ws instance.
+ *
  * @extends AbstractTransportFacade
  */
 function WSFacade(wsTransport) {

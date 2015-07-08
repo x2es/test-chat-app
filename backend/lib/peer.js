@@ -9,10 +9,12 @@ var peerUid = 0;
  * Represents a peer.
  * Provides common interface for different types of transports.
  *
- * @param {AbstractTransportFacade} transport
+ * NOTE: 'endpoint' in several cases may be named as 'transport'
+ *
+ * @param {AbstractTransportFacade} endpoint
  */
-function Peer(transportFacade) {
-  this._transportFacade = transportFacade;
+function Peer(endpoint) {
+  this._endpoint = endpoint;
   this.setUid(peerUid++);
 }
 
@@ -20,7 +22,7 @@ accessors(Peer, ['uid']);
 
 delegate(Peer, {
   methods: ['onDisconnected', 'onMessage', 'send'],
-  to: '_transportFacade'
+  to: '_endpoint'
 });
 
 module.exports = Peer;

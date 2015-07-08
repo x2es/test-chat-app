@@ -2,6 +2,8 @@
 /** NOTE: just interface; not required in code but reffered by @extends **/
 
 /**
+ * Represents peer's endpoint. Adapt transport API to application conventions.
+ *
  * @param {AbstractTransport} transport
  */
 function AbstractTransportFacade(transport) {};
