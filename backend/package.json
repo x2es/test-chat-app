@@ -1,7 +1,7 @@
 {
-  "name": "chat_server_konstantin",
+  "name": "chat_app_konstantin",
   "version": "0.0.1",
-  "description": "Test task by Konstantin Ivanov for Tango.me",
+  "description": "Test task by Konstantin Ivanov",
   "main": "chat-server.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha ./spec/**"
