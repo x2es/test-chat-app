@@ -16,13 +16,13 @@ non-programmers, especially by product/project managers.
 Backend
 =======
 
-  $ cd backend
-  $ npm install
+    $ cd backend
+    $ npm install
 
 Run tests:
 
-  $ npm test
+    $ npm test
 
 Run server:
 
-  $ npm start
+    $ npm start
