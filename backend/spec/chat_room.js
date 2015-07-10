@@ -1,4 +1,6 @@
 
+// TODO: refactor for reuse mocks
+
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
@@ -6,6 +8,8 @@ var ChatRoom = require('../lib/chat_room.js');
 var Peer = require('../lib/peer.js');
 
 describe('ChatRoom', function() {
+  var nop = function() {};
+
   var chatRoom;
   beforeEach(function() {
     chatRoom = new ChatRoom();
@@ -56,8 +60,6 @@ describe('ChatRoom', function() {
 
   describe('broadcast', function() {
 
-    var nop = function() {};
-
     var tmpCnt = 0;
 
     function mockEndPoint() {
@@ -103,5 +105,61 @@ describe('ChatRoom', function() {
 
       expect(ep1.send.callCount).equal(0);
     });
+
+    it('should not send message to exclueded peers', function() {
+      chatRoom.broadcast({ some: 'msg' }, { exclude: [ peer2.getUid() ] });
+      expect(ep2.send.callCount).equal(0);
+    });
+  });
+
+  describe('incomming message', function() {
+    var peer, onMessageHandler;
+
+    beforeEach(function() {
+      peer = {
+        getUid: function() { return (1212) },
+        onDisconnected: nop,
+        onMessage: function(handler) {
+          onMessageHandler = handler;
+        },
+        send: sinon.spy()
+      }
+      chatRoom.invite(peer);
+
+      sinon.stub(chatRoom, 'broadcast');
+    });
+
+    describe('when .type field specified', function() {
+      it('should not broadcast messages by default', function() {
+        onMessageHandler.apply(peer, [ { body: 'abc', type: 'xyz' } ]);
+        expect(chatRoom.broadcast.callCount).equal(0);
+      });
+
+      describe('="name"', function() {
+        it('should broadcast name introducion for type="name"', function() {
+          onMessageHandler.apply(peer, [ { body: 'John', type: 'name' } ]);
+          expect(chatRoom.broadcast.calledOnce).ok;
+          var msg = chatRoom.broadcast.firstCall.args[0];
+          expect(msg.origin).equal(0);
+          expect(msg.body).contains('John');
+        });
+
+        it('should not send message to origin', function() {
+          onMessageHandler.apply(peer, [ { body: 'John', type: 'name' } ]);
+          var exclude = chatRoom.broadcast.firstCall.args[1].exclude;
+          console.log(exclude);
+          expect(exclude).to.contain(peer.getUid());
+        });
+
+        it('should send welcome to peer', function() {
+          onMessageHandler.apply(peer, [ { body: 'John', type: 'name' } ]);
+          expect(peer.send.calledOnce).ok;
+          expect(peer.send.firstCall.args[0].body).include('Welcome');
+        });
+
+      });
+
+    });
+
   });
 });

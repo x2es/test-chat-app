@@ -1,5 +1,18 @@
+/**
+ * Message format:
+ *
+ * {
+ *   [mandatory]    body:   'String'
+ *   [optional]     from:   'String'            // name of sender
+ *   [optional]     origin: 'Number'            // peer id on server; 0 is server
+ *   [optional]     type:   'Enum(name)'        // intraduce name
+ * }
+ *
+ */
 
 var Helpers = require('./helpers.js');
+
+var SYSTEM = 0;   // origin for system
 
 function peerComparator(item, query) {
   if (item.getUid() === query.getUid()) return (0);
@@ -25,7 +38,22 @@ ChatRoom.prototype.invite = function (peer) {
 
     peer.onMessage(function(msg) {
       msg.origin = peer.getUid();
-      chatRoom.broadcast(msg);
+
+      // TODO: make massage router
+      // TODO: review message origin concept
+      if (msg.type != undefined) {
+        // TODO: refactor type="name" to type="join"
+        if (msg.type === 'name') {
+          peer.send({ origin: SYSTEM, body: 'Welcome!' })
+          chatRoom.broadcast({ 
+            origin: SYSTEM, 
+            body: msg.body + ' have joined!' 
+          }, { exclude: [ msg.origin ] });
+        } 
+        return;
+      }
+
+      chatRoom.broadcast(msg, { exclude: [ msg.origin ] });
     });
   })(this, peer);
 };
@@ -47,13 +75,16 @@ ChatRoom.prototype.isMember = function(peer) {
  * except origin
  *
  * @param {Message} message
+ * @param {Array<int>} opts.exclude
  */
-ChatRoom.prototype.broadcast = function (message) {
-  var origin = message.origin;
+ChatRoom.prototype.broadcast = function (message, opts) {
+  var o = opts || {};
+  var exclude = o.exclude || [];
+
   var peers = this._peers;
   for (var i=0; i<peers.length; i++) {
     var peer = peers[i];
-    if (origin === peer.getUid()) continue;
+    if (exclude.indexOf(peer.getUid()) !== -1) continue;
     peer.send(message);
   }
 };

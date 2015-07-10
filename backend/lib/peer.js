@@ -3,7 +3,8 @@ var MiniFrame = require('./miniframe.js');
 var accessors = MiniFrame.accessors;
 var delegate = MiniFrame.delegate;
 
-var peerUid = 0;
+// 0 reserved for system messages
+var peerUid = 1;
 
 /**
  * Represents a peer.
