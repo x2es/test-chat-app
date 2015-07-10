@@ -13,8 +13,12 @@ angular
     'ngAnimate',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ngMessages'
   ])
+
+  .value('serverUrl', 'ws://localhost:14545/')
+
   .config(function ($routeProvider) {
     $routeProvider
       // .when('/', {

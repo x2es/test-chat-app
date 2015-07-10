@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>WebSocket Chat</title>
+    <title>The Chat</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -35,7 +35,7 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/">WebSocket Chat</a>
+            <a class="navbar-brand" href="#/">The Chat</a>
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
@@ -70,6 +70,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -78,6 +79,8 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/chat.js"></script>
+        <script src="scripts/services/web_socket_endpoint.js"></script>
+        <script src="scripts/services/nickname.js"></script>
         <!-- endbuild -->
 </body>
 </html>

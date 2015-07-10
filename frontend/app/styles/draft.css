@@ -6,6 +6,11 @@
   padding: 5px;
 }
 
+.chat-window .error-message {
+  font-weight: bold;
+  color: red;
+}
+
 .chat-window .message {
   margin-bottom: 5px;
 }
@@ -19,6 +24,12 @@
   font-size: 8pt;
 
   cursor: pointer;
+}
+
+.chat-window .message .from.me {
+  background-color: #CCFF99;
+  color: gray;
+  cursor: default;
 }
 
 .chat-window .message.system .body {
