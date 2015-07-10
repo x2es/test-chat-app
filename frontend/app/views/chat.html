@@ -1,0 +1,19 @@
+<div class="chat-window">
+  <!-- <div class="nickname">Opolusy</div> -->
+  <input type="text" ng-model="nickname">
+  <div class="conversation">
+    <div class="message" ng-repeat="message in messages" ng-class="{ system: isSystem(message) }">
+      <span class="from" ng-click="appealTo($index)" ng-class="{ hidden: isSystem(message) }">{{message.from}}</span>
+      <span class="body">{{message.body}}</span>
+    </div>
+  </div>
+  <form ng-submit="send()">
+    <textarea ng-model="inp_message" placeholder="Whatsup!"></textarea>
+    <button class="bt send" type="submit">Send</button>
+    <div class="notifications">Foo, Bar, Baz, BarBazBar are typing...</div>
+  </form>
+
+  <form ng-submit="tmp_systemMessage()">
+    <input type="text" ng-model="inp_sysMessage">
+  </form>
+</div>
