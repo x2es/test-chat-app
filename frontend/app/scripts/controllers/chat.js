@@ -11,21 +11,8 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('ChatCtrl', function ($scope, serverUrl, webSocketEndpoint, nickname) {
-    var endpoint, appealExclude;
-
-    function connectWebSocket() {
-      endpoint = webSocketEndpoint.connect(serverUrl);
-
-      endpoint.onError(function(){
-        $scope.connection = { $error: { failed: true } };
-      });
-
-      endpoint.onMessage(function(msg) {
-        $scope.messages.push(msg);
-        $scope.$apply();
-      });
-    }
+  .controller('ChatCtrl', function ($scope, nickname, endpoint) {
+    var appealExclude;
 
     function introduce() {
       // TODO: may be implemented as protocol library
@@ -55,7 +42,6 @@ angular.module('frontendApp')
 
     initMessageInput();
 
-    connectWebSocket();
     introduce();
 
     $scope.send = function() {
@@ -89,7 +75,6 @@ angular.module('frontendApp')
     };
 
     $scope.isMe = function(message) {
-      console.log('isMe');
       return (message.from === getNickname());
     };
 

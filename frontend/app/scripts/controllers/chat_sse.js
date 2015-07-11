@@ -1,0 +1,39 @@
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name frontendApp.controller:ChatSseCtrl
+ * @description
+ * # ChatSseCtrl
+ * Controller of the frontendApp
+ */
+angular.module('frontendApp')
+  /**
+   * @extends ChatCtrl
+   */
+  .controller('ChatSSECtrl', function ($scope, $controller, wsUrl, sseUrl, webSocketEndpoint, sseEndpoint) {
+    var endpoint = {};
+
+    var sseEP = sseEndpoint.connect(sseUrl);
+    var wsEP = webSocketEndpoint.connect(wsUrl);
+    wsEP.setReady('paired', false);
+    sseEP.onMessage(function(msg) {
+
+      // TODO: care about lifecycle of this event
+
+      if (msg.type != undefined && msg.type === 'pair') {
+        wsEP.send(msg, { system: true });
+        // TODO: wait success answer before .setReady('paired')
+        wsEP.setReady('paired');
+        return;
+      }
+
+      $scope.messages.push(msg);
+      $scope.$apply();
+    });
+
+
+    endpoint.send = wsEP.send.bind(wsEP);
+
+    angular.extend(this, $controller('ChatCtrl', { $scope: $scope, endpoint: endpoint }));
+  });
