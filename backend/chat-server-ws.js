@@ -1,5 +1,5 @@
 
-var PORT = 14545;
+var PORT = 12002;
 
 var WSServer = require('ws').Server;
 var ChatRoom = require('./lib/chat_room.js');

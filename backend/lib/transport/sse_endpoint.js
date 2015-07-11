@@ -1,5 +1,8 @@
 
 /**
+ * Implements only outgoing interface of AbstractTransportFacade
+ *
+ * @extends AbstractTransportFacade
  * @param {ServerResponse} res
  */
 function SSEEndpoint(res) {

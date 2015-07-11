@@ -6,6 +6,7 @@ var sinon = require('sinon');
 
 var ChatRoom = require('../lib/chat_room.js');
 var Peer = require('../lib/peer.js');
+var MessageFactory = require('../lib/message_factory.js');
 
 describe('ChatRoom', function() {
   var nop = function() {};
@@ -89,7 +90,7 @@ describe('ChatRoom', function() {
     });
 
     it('should broadcast message to all other peers', function() {
-      var message = { body: 'msg' };
+      var message = { some: 'msg' };
       ep1._newMessageHandler.apply(ep1, [ message ]);
 
       expect(ep2.send.calledOnce).ok;
@@ -100,7 +101,7 @@ describe('ChatRoom', function() {
     });
 
     it('should not send message to origin', function() {
-      var message = { body: 'msg' };
+      var message = { some: 'msg' };
       ep1._newMessageHandler.apply(ep1, [ message ]);
 
       expect(ep1.send.callCount).equal(0);
@@ -137,7 +138,7 @@ describe('ChatRoom', function() {
 
       describe('="name"', function() {
         it('should broadcast name introducion for type="name"', function() {
-          onMessageHandler.apply(peer, [ { body: 'John', type: 'name' } ]);
+          onMessageHandler.apply(peer, [ MessageFactory.name('John') ]);
           expect(chatRoom.broadcast.calledOnce).ok;
           var msg = chatRoom.broadcast.firstCall.args[0];
           expect(msg.origin).equal(0);
@@ -145,14 +146,14 @@ describe('ChatRoom', function() {
         });
 
         it('should not send message to origin', function() {
-          onMessageHandler.apply(peer, [ { body: 'John', type: 'name' } ]);
+          onMessageHandler.apply(peer, [ MessageFactory.name('John') ]);
           var exclude = chatRoom.broadcast.firstCall.args[1].exclude;
           console.log(exclude);
           expect(exclude).to.contain(peer.getUid());
         });
 
         it('should send welcome to peer', function() {
-          onMessageHandler.apply(peer, [ { body: 'John', type: 'name' } ]);
+          onMessageHandler.apply(peer, [ MessageFactory.name('John') ]);
           expect(peer.send.calledOnce).ok;
           expect(peer.send.firstCall.args[0].body).include('Welcome');
         });

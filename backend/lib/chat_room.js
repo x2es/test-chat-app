@@ -1,15 +1,5 @@
-/**
- * Message format:
- *
- * {
- *   [mandatory]    body:   'String'
- *   [optional]     from:   'String'            // name of sender
- *   [optional]     origin: 'Number'            // peer id on server; 0 is server
- *   [optional]     type:   'Enum(name)'        // intraduce name
- * }
- *
- */
 
+var MessageFactory = require('./message_factory.js');
 var Helpers = require('./helpers.js');
 
 var SYSTEM = 0;   // origin for system
@@ -40,15 +30,10 @@ ChatRoom.prototype.invite = function (peer) {
       msg.origin = peer.getUid();
 
       // TODO: make massage router
-      // TODO: review message origin concept
       if (msg.type != undefined) {
-        // TODO: refactor type="name" to type="join"
         if (msg.type === 'name') {
-          peer.send({ origin: SYSTEM, body: 'Welcome!' })
-          chatRoom.broadcast({ 
-            origin: SYSTEM, 
-            body: msg.body + ' have joined!' 
-          }, { exclude: [ msg.origin ] });
+          peer.send(MessageFactory.system('Welcome'));
+          chatRoom.broadcast(MessageFactory.system(msg.body + ' have joined!'), { exclude: [ msg.origin ] });
         } 
         return;
       }
