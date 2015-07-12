@@ -1,0 +1,159 @@
+{
+   "agent": "AutobahnPython",
+   "behavior": "FAILED",
+   "behaviorClose": "UNCLEAN",
+   "case": 6,
+   "closedByMe": true,
+   "createStats": true,
+   "createWirelog": true,
+   "description": "Send text message message with payload of length 65535.",
+   "droppedByMe": true,
+   "duration": 11007,
+   "expectation": "Receive echo'ed text message (with payload as sent). Clean close with normal code.",
+   "expected": {
+      "OK": [
+         [
+            "message",
+            "**************************************************************** ...",
+            false
+         ]
+      ]
+   },
+   "expectedClose": {
+      "closeCode": [
+         1000
+      ],
+      "closedByMe": true,
+      "requireClean": true
+   },
+   "failedByMe": true,
+   "httpRequest": "GET / HTTP/1.1\r\nUser-Agent: AutobahnTestSuite/0.7.1-0.10.4\r\nHost: localhost:9999\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nSec-WebSocket-Key: ASDytXv3CQrRTI3UiWj34w==\r\nSec-WebSocket-Version: 13\r\n\r\n",
+   "httpResponse": "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: T3jSUCxxpzIuAZkzOGN8LVVCoNw=\r\n\r\n",
+   "id": "1.1.6",
+   "isServer": false,
+   "localCloseCode": 1001,
+   "localCloseReason": "Going Away",
+   "received": [
+      [
+         "message",
+         "%\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd ...",
+         false
+      ]
+   ],
+   "remoteCloseCode": null,
+   "remoteCloseReason": null,
+   "reportCompressionRatio": false,
+   "reportTime": false,
+   "result": "Actual events differ from any expected.",
+   "resultClose": "The spec requires the connection to be failed cleanly here",
+   "rxFrameStats": {
+      "1": 1
+   },
+   "rxOctetStats": {
+      "139": 1,
+      "194": 1
+   },
+   "started": "2015-07-12T19:12:32.876Z",
+   "trafficStats": null,
+   "txFrameStats": {
+      "1": 1,
+      "8": 1
+   },
+   "txOctetStats": {
+      "18": 1,
+      "240": 1,
+      "65543": 1
+   },
+   "wasClean": false,
+   "wasCloseHandshakeTimeout": true,
+   "wasNotCleanReason": "peer did not respond (in time) in closing handshake",
+   "wasOpenHandshakeTimeout": false,
+   "wasServerConnectionDropTimeout": false,
+   "wirelog": [
+      [
+         "TO",
+         [
+            240,
+            "474554202f20485454502f312e310d0a557365722d4167656e743a204175746f6261686e5465737453756974652f302e372e312d302e31302e340d0a486f7374 ..."
+         ],
+         false
+      ],
+      [
+         "RO",
+         [
+            139,
+            "485454502f312e31203130312057656220536f636b65742050726f746f636f6c2048616e647368616b650d0a557067726164653a20576562536f636b65740d0a ..."
+         ]
+      ],
+      [
+         "TF",
+         [
+            65535,
+            "**************************************************************** ..."
+         ],
+         1,
+         true,
+         0,
+         "8d88da03",
+         null,
+         null,
+         false
+      ],
+      [
+         "TO",
+         [
+            65543,
+            "81feffff8d88da03a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029a7a2f029 ..."
+         ],
+         false
+      ],
+      [
+         "KL",
+         10
+      ],
+      [
+         "RO",
+         [
+            194,
+            "817e00be25efbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a0fefbfbd2a2a ..."
+         ]
+      ],
+      [
+         "RF",
+         [
+            190,
+            "%\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd**\u000f\ufffd ..."
+         ],
+         1,
+         true,
+         0,
+         false,
+         null
+      ],
+      [
+         "KLE"
+      ],
+      [
+         "TF",
+         [
+            12,
+            "0x03e9476f696e672041776179"
+         ],
+         8,
+         true,
+         0,
+         "9cfd8d1c",
+         null,
+         null,
+         false
+      ],
+      [
+         "TO",
+         [
+            18,
+            "888c9cfd8d1c9f14ca73f593ea3cdd8aec65"
+         ],
+         false
+      ]
+   ]
+}
