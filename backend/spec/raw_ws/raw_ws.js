@@ -1,7 +1,7 @@
 
 var expect = require('chai').expect;
 
-var rws = require('../../lib/raw_ws/raw_ws.js');
+var rws = require('../../lib/raw_ws/lib.js');
 
 // Snippets for internal tests
 //   Sec-WebSocket-Key  dGhlIHNhbXBsZSBub25jZQ==

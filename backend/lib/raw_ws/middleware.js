@@ -3,7 +3,7 @@ var debug = true;
 
 var MiniFrame = require('../miniframe.js');
 
-var rws = require('./raw_ws.js');
+var rws = require('./lib.js');
 var RawWSSocket = require('./socket.js');
 
 /**

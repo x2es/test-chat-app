@@ -6,7 +6,7 @@ var PORT = process.argv[2] || 11001;
 
 var http = require('http');
 
-var rws = require('./lib/raw_ws/raw_ws.js');
+var rws = require('./lib/raw_ws/lib.js');
 var RWSMiddleware = require('./lib/raw_ws/middleware.js');
 
 var srv = http.createServer();
@@ -34,5 +34,5 @@ rwsMiddleware
 
 srv.listen(PORT);
 
-console.log('echo server with raw_ws.js')
+console.log('echo server with raw_ws')
 console.log('  [http]', PORT);
