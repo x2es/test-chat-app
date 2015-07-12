@@ -57,4 +57,41 @@ MiniFrame.delegate = function(Class, opts) {
   }
 };
 
+
+/**
+ * @param {Function} Class
+ * @param {Array<String>} events
+ */
+MiniFrame.events = function(Class, events) {
+
+  events.forEach(function(ev) {
+    var evCap = ev.charAt(0).toUpperCase() + ev.slice(1);
+    var onName = 'on' + evCap;
+    var fireName = '_fire' + evCap;
+
+    Class.prototype[onName] = function(handler) {
+      if (this._evHandlers == undefined) this._evHandlers = {};
+      if (this._evHandlers[ev] == undefined) this._evHandlers[ev] = [];
+
+      this._evHandlers[ev].push(handler);
+
+      return this;    // chainable
+    }
+
+    Class.prototype[fireName] = function() {
+      if (this._evHandlers == undefined) return;
+      if (this._evHandlers[ev] == undefined) return;
+
+      var args = Array.prototype.slice.call(arguments);
+
+      var handlers = this._evHandlers[ev];
+      for (var i=0; i<handlers.length; i++) {
+        var handler = handlers[i];
+        handler.apply(this, args);
+      }
+    }
+  });
+
+};
+
 module.exports = MiniFrame;

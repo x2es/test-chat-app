@@ -3,7 +3,7 @@
       "1.1.2": {
          "behavior": "OK",
          "behaviorClose": "UNCLEAN",
-         "duration": 1002,
+         "duration": 1001,
          "remoteCloseCode": null,
          "reportfile": "autobahnpython_case_1_1_2.json"
       }

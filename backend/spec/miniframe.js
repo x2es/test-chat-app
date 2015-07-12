@@ -70,6 +70,51 @@ describe('MiniFrame', function() {
 
     });
   });
+
+  describe('events', function() {
+    it('should handle events', function() {
+      function Foo() {}
+
+      MiniFrame.events(Foo, [ 
+        /**
+         * @param {String} who
+         * @param {String} when
+         */
+        'open', 
+
+        /**
+         * @param {String} why
+         */
+        'close' 
+      ]);
+
+      var openSpy1 = sinon.spy();
+      var openSpy2 = sinon.spy();
+      var closeSpy1 = sinon.spy();
+      var closeSpy2 = sinon.spy();
+
+      var foo = new Foo();
+
+      foo.onOpen(openSpy1);
+      foo.onOpen(openSpy2);
+      foo.onClose(closeSpy1);
+      foo.onClose(closeSpy2);
+      
+      foo._fireOpen('me', 'now');
+      foo._fireClose('enough');
+
+      expect(openSpy1.calledOnce).ok;
+      expect(openSpy2.calledOnce).ok;
+      expect(closeSpy1.calledOnce).ok;
+      expect(closeSpy2.calledOnce).ok;
+
+      expect(openSpy1.firstCall.args).deep.equal(openSpy2.firstCall.args);
+      expect(closeSpy1.firstCall.args).deep.equal(closeSpy2.firstCall.args);
+
+      expect(openSpy1.firstCall.args).deep.equal(['me', 'now']);
+      expect(closeSpy1.firstCall.args).deep.equal([ 'enough' ]);
+    });
+  });
 });
 
 
