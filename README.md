@@ -14,7 +14,7 @@ I have implemented zero-dependency communication libraries:
    It depends only on node's `http` and `crypto` libraries.
    It supports `opcodes=[1,8]` and successfully passes about 100 tests of `wstest` [Autobahn TestSuite](http://autobahn.ws/testsuite/).
    Recent test reports plased at: `./testsuite-raw-ws-autobahn/reports/servers/index.html`
-   For testing purposes have implemented `./echo-servers-raw-ws.js` which responds to `wstest` requests.
+   Echo server was implemented for testing purposes: `./echo-servers-raw-ws.js`. It responds to `wstest` requests.
 
  * Server-Sent Events (SSE) implementation: `./backend/lib/sse/*`
    It is absolutely minimal implementation for chat-app purposes.
@@ -58,6 +58,8 @@ Simple SSE and WebSocket endpoint-services was implemented for this purposes:
  * `./frontend/app/scripts/services/web_socket_endpoint.js`
 
 Base chat controller `./frontend/app/scripts/controllers/chat.js` have two extensions: `chat_sse.js` and `chat_ws.js`.
+
+Connection configuration placed in `./frontend/app/scripts/app.js`.
 
 
 TDD

@@ -8,10 +8,10 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('ChatWSCtrl', function ($scope, $controller, wsPort, webSocketEndpoint) {
+  .controller('ChatWSCtrl', function ($scope, $controller, wsURI, webSocketEndpoint) {
     var endpoint;
 
-    var wsUrl = 'ws://localhost:' + wsPort + '/';
+    var wsUrl = 'ws:' + wsURI;
 
     function connectionError() {
       $scope.connection = { $error: { failed_ws: true } };

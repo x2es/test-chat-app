@@ -37,7 +37,6 @@ ChatRoom.prototype.invite = function (peer) {
         } 
 
         if (msg.type === 'typing') {
-          console.log('typing', msg);
           chatRoom.broadcast(msg, { exclude: [ peer.getUid() ] });
         }
         return;

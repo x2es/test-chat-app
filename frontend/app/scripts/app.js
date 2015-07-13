@@ -17,8 +17,8 @@ angular
     'ngMessages'
   ])
 
-  .value('ssePort', 12001)
-  .value('wsPort', 12002)
+  .value('sseURI', '//localhost:12001/')
+  .value('wsURI', '//localhost:12002')
 
   .config(function ($routeProvider) {
     $routeProvider
