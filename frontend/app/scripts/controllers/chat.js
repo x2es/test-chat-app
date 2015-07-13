@@ -32,19 +32,23 @@ angular.module('frontendApp')
       angular.element('.message-input').trigger('focus');
     }
 
+    var preventSendingTypingTimer;
     function sendTyping() {
       if ($scope.preventSendingTyping) return;
-      console.log('send typing');
       $scope.preventSendingTyping = true;
-      setTimeout(function() { $scope.preventSendingTyping = false; }, 3000);    // 3sec - freq limit
+      preventSendingTypingTimer = setTimeout(function() { $scope.preventSendingTyping = false; }, 3000);    // 3sec - freq limit
 
       endpoint.send({ from: getNickname(), type: 'typing' });
     }
 
     var typersTimers = {};
     function removeTyper(name) {
+      var timer = typersTimers[name];
+      if (timer != undefined) clearTimeout(timer);
+
       var i = $scope.typers.indexOf(name);
       if (i === -1) return;
+
       $scope.typers.splice(i,1);
       $scope.$apply();
     }
@@ -60,8 +64,6 @@ angular.module('frontendApp')
       if (timer != undefined) clearTimeout(timer);
       timer = setTimeout(function() {
         removeTyper(typer);
-        var timer = typersTimers[typer];
-        if (timer != undefined) clearTimeout(timer);
       }, 5000);
       typersTimers[typer] = timer;
     }
@@ -98,6 +100,8 @@ angular.module('frontendApp')
         return;
       }
 
+      removeTyper(msg.from);
+
       $scope.messages.push(msg);
       $scope.$apply();
     };
@@ -110,6 +114,8 @@ angular.module('frontendApp')
       if ($scope.inp_message === '') return;
       var msg = { from: getNickname(), body: $scope.inp_message };
       endpoint.send(msg);
+      $scope.preventSendingTyping = false;
+      if (preventSendingTypingTimer != undefined) clearTimeout(preventSendingTypingTimer);
       $scope.messages.push(msg);
       initMessageInput();
       focusInput();
