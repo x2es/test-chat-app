@@ -1,6 +1,6 @@
 'use strict';
 
-// TODO: optimize using functions like isSystem(), isMe(), getNickname()
+// TODO: optimize usage of functions like isSystem(), isMe(), getNickname()
 //       too many refreshes
 
 /**
