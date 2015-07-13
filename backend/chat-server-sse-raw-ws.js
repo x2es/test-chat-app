@@ -25,11 +25,8 @@ var ChannelsController = require('./lib/transport/channels_controller.js');
 var sseMiddleware = new SSEMiddleware();
 
 // middleware of Raw WebSocket
-var rwsLib = require('./lib/raw_ws/lib.js');
 var RWSMiddleware = require('./lib/raw_ws/middleware.js');
-
-// WebSocket middleware
-// var wss = new WSServer({ port: WS_PORT });
+var rwsMiddleware = new RWSMiddleware();
 
 var chatRoom = new ChatRoom();
 
@@ -55,11 +52,6 @@ sseMiddleware
 
 /** WebSocket middleware **/
 
-// wss.on('connection', function(ws) {
-//   channelsController.addWebSocket(new WSFacade(ws));
-// });
-
-
 var server = http.createServer(function(req, res) {
   
   // handle text/event-stream
@@ -69,7 +61,6 @@ var server = http.createServer(function(req, res) {
   // ...
 });
 
-var rwsMiddleware = new RWSMiddleware();
 
 rwsMiddleware.use(server)
   .onConnection(function(rwsSocket) {

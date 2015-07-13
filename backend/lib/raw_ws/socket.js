@@ -3,7 +3,7 @@ var lg = require('../dev/debug.js').lg;
 
 var MiniFrame = require('../miniframe.js');
 
-var rws = require('./lib.js');
+var rwsLib = require('./lib.js');
 
 /**
  * @constructor
@@ -16,9 +16,14 @@ function RawWSSocket(socket) {
 
 MiniFrame.events(RawWSSocket, [
   /**
-   * @param {RawWSFrame} frame
+   * @param {Function(RawWSFrame)} frame
    */
   'data',
+
+  /**
+   * @param {Function(String)} message
+   */
+  'message',
 
   /**
    * @param {Error<Object(code, message)>} error
@@ -45,7 +50,7 @@ RawWSSocket.prototype._bindSocketEvents = function() {
       lg('[socket:data] length:', buffer.length);
 
       try {
-        var frame = rws.parseFrame(buffer);
+        var frame = rwsLib.parseFrame(buffer);
       } catch (e) {
         rwsSocket._fireUnsupported(e);
         return;
@@ -54,10 +59,19 @@ RawWSSocket.prototype._bindSocketEvents = function() {
       lg('rwsSocket._fireData()');
       rwsSocket._fireData(frame);
 
+      if (frame.opcode == rwsLib.OPCODE_TEXT) rwsSocket._fireMessage(frame.payload);
+
     });
   })(this);
 
-  
+}
+
+/**
+ * @message {String} str
+ */
+RawWSSocket.prototype.send = function(message) {
+  var frame = rwsLib.buildFrame({ opcode: rwsLib.OPCODE_TEXT, payload: message });
+  this._socket.write(frame);
 }
 
 module.exports = RawWSSocket;
