@@ -17,6 +17,17 @@ angular.module('frontendApp')
 
       endpoint.onError(function(){
         $scope.connection = { $error: { failed: true } };
+        $scope.$apply();
+      });
+
+      endpoint.onOpen(function() {
+        $scope.connection = { $error: { failed: false } };
+        $scope.$apply();
+      });
+
+      endpoint.onClose(function(){
+        $scope.connection = { $error: { failed: true } };
+        $scope.$apply();
       });
 
       endpoint.onMessage(function(msg) {

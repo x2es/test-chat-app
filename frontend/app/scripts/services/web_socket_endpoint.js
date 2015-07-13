@@ -10,6 +10,8 @@ function WSEndpoint(ws) {
   this._queueSys = [];
   this._messageHandlers = [];
   this._errorHandlers = [];
+  this._closeHandlers = [];
+  this._openHandlers = [];
 
   this._readyState = {
     open: false
@@ -30,6 +32,10 @@ WSEndpoint.prototype._bindWSEvents = function() {
     ws.onopen = function() {
       endpoint.setReady('open');
       endpoint.flush();
+    };
+
+    ws.onclose = function() {
+      endpoint._fireCloseHandlers();
     };
 
     ws.onmessage = function(e) {
@@ -91,6 +97,29 @@ WSEndpoint.prototype._fireErrorHandlers = function() {
     handlers[i].apply(this);
   }
 }
+
+WSEndpoint.prototype.onClose = function(handler) {
+  this._closeHandlers.push(handler);
+}
+
+WSEndpoint.prototype._fireCloseHandlers = function() {
+  var handlers = this._closeHandlers;
+  for (var i=0; i<handlers.length; i++) {
+    handlers[i].apply(this);
+  }
+}
+
+WSEndpoint.prototype.onOpen = function(handler) {
+  this._openHandlers.push(handler);
+}
+
+WSEndpoint.prototype._fireOpenHandlers = function() {
+  var handlers = this._openHandlers;
+  for (var i=0; i<handlers.length; i++) {
+    handlers[i].apply(this);
+  }
+}
+
 
 /**
  * @param {Object} obj
