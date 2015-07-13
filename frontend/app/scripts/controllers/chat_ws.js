@@ -8,8 +8,10 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('ChatWSCtrl', function ($scope, $controller, wsUrl, webSocketEndpoint) {
+  .controller('ChatWSCtrl', function ($scope, $controller, wsPort, webSocketEndpoint) {
     var endpoint;
+
+    var wsUrl = 'ws://localhost:' + wsPort + '/';
 
     // TODO: DRY
     function connectWebSocket() {

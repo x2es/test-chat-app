@@ -11,8 +11,11 @@ angular.module('frontendApp')
   /**
    * @extends ChatCtrl
    */
-  .controller('ChatSSECtrl', function ($scope, $controller, wsUrl, sseUrl, webSocketEndpoint, sseEndpoint) {
+  .controller('ChatSSECtrl', function ($scope, $controller, ssePort, webSocketEndpoint, sseEndpoint) {
     var endpoint = {};
+
+    var sseUrl = 'http://localhost:' + ssePort + '/';
+    var wsUrl = 'ws://localhost:' + ssePort + '/';
 
     var sseEP = sseEndpoint.connect(sseUrl);
     var wsEP = webSocketEndpoint.connect(wsUrl);

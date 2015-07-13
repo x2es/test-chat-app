@@ -1,12 +1,9 @@
 
-var PORT = 12001;
+var PORT = 12002;
 
-// var WSServer = require('ws').Server;
 var ChatRoom = require('./lib/chat_room.js');
 var RWSFacade = require('./lib/transport/rws_facade.js');
 var Peer = require('./lib/peer.js');
-
-// var wss = new WSServer({ port: PORT });
 
 var http = require('http');
 
