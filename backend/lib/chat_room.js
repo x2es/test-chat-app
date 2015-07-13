@@ -32,7 +32,7 @@ ChatRoom.prototype.invite = function (peer) {
       // TODO: make massage router
       if (msg.type != undefined) {
         if (msg.type === 'name') {
-          peer.send(MessageFactory.system('Welcome'));
+          peer.send(MessageFactory.system('Welcome!'));
           chatRoom.broadcast(MessageFactory.system(msg.body + ' have joined!'), { exclude: [ msg.origin ] });
         } 
         return;

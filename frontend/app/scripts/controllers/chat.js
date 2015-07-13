@@ -35,10 +35,20 @@ angular.module('frontendApp')
     $scope.defaultNickname = nickname;
 
     $scope.messages = [
-      { from: 'Foo', body: 'Hi all!' },
-      { from: 'Bar', body: 'Hi, Foo!' },
-      { from: 'Baz', body: 'Hi, Foo, Bar!' }
+      { from: getNickname(), body: 'Which difference between #/chat-sse and #/chat-ws?' },
+      { from: 'Konstantin Ivanov', body: 'I have implemented two versions of chat-server.\n#/chat-see comunicates with server using two channel: Server-Sent Events for incomming and WebSocket for outgoing data.' },
+      { from: 'Konstantin Ivanov', body: '#/chat-ws use WebSocket for sending data in both directions.' },
+      { from: getNickname(), body: 'My name is too weird..' },
+      { from: 'Konstantin Ivanov', body: 'Just type another one!' },
+      { from: 'Konstantin Ivanov', body: 'Hint, you may click on my name to put it into textbox.' },
     ];
+
+    $scope.$watchCollection('messages', function(newValue) {
+      if (newValue) { 
+        var el = angular.element('.conversation');
+        el.scrollTop(el[0].scrollHeight); 
+      }
+    });
 
     initMessageInput();
 
@@ -50,6 +60,11 @@ angular.module('frontendApp')
       endpoint.send(msg);
       $scope.messages.push(msg);
       initMessageInput();
+      focusInput();
+    };
+
+    $scope.nicknameKeypress = function(e) {
+      if (e.charCode === 13) focusInput();
     };
 
     $scope.inputKeypress = function(e) {

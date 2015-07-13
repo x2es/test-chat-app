@@ -2,16 +2,18 @@
   <div ng-messages="connection.$error">
     <div class="error-message" ng-message="failed">Unable to connect to server!</div>
   </div>
-  <input type="text" ng-model="nickname" placeholder="{{defaultNickname}}">
+  <input type="text" class="nickname" ng-model="nickname" placeholder="{{defaultNickname}}" ng-keypress="nicknameKeypress($event)">
   <div class="conversation">
     <div class="message" ng-repeat="message in messages" ng-class="{ system: isSystem(message) }">
       <span class="from" ng-click="appealTo($index)" ng-class="{ hidden: isSystem(message), me: isMe(message) }">{{message.from}}</span>
       <span class="body" ng-bind-html="br(message.body)"></span>
     </div>
   </div>
-  <form ng-submit="send()">
-    <textarea class="message-input" ng-model="inp_message" placeholder="Whatsup, {{getNickname()}}!" ng-keypress="inputKeypress($event)"></textarea>
-    <button class="bt send" type="submit">Send</button>
-    <div class="notifications">Foo, Bar, Baz, BarBazBar are typing...</div>
-  </form>
+  <div class="input">
+    <form ng-submit="send()">
+      <button class="bt send" type="submit"></button>
+      <textarea class="message-input" ng-model="inp_message" placeholder="Whatsup, {{getNickname()}}!" ng-keypress="inputKeypress($event)"></textarea>
+      <div class="notifications">Foo, Bar, Baz, BarBazBar are typing...</div>
+    </form>
+  </div>
 </div>

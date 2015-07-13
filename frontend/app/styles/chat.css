@@ -1,0 +1,98 @@
+
+html, body {
+  height: 100%;
+}
+
+.page.container {
+  height: 70%;
+  position: relative;
+  font-size: 14pt;
+}
+
+.page.container > .ng-scope {
+  height: 100%;
+}
+
+.chat-window {
+  padding: 5px;
+  height: 100%;
+}
+
+.chat-window .error-message {
+  font-weight: bold;
+  color: red;
+}
+
+.chat-window .nickname {
+  width: 100%;
+  font-size: 20pt;
+  border: none;
+  border-bottom: 2px solid black;
+}
+
+.chat-window .conversation {
+  height: 80%;
+  overflow: auto;
+  margin-top: 20px;
+  /* margin-bottom: 20px; */
+}
+
+.chat-window .conversation .message:last-child {
+  margin-bottom: 70px;
+}
+
+.chat-window .input {
+  position: relative;
+  bottom: 20px;
+  width: 100%;
+}
+
+.chat-window .input .message-input {
+  width: 85%;
+  font-size: 18pt;
+  height: 70px;
+}
+
+.chat-window button {
+  float: right;
+  height: 70px;
+  width: 13%;
+  border: 1px solid #ddd;
+  background: url(../images/send.svg) no-repeat #eee 50%; 
+  background-size: 60%;
+}
+
+.chat-window button:hover {
+  background-color: #ddd;
+}
+
+.chat-window .message {
+  margin-bottom: 5px;
+}
+
+.chat-window .message .from {
+  /* font-weight: bold; */
+  color: white;
+  background-color: #7595FF;
+  /* outline: 1px solid #FFEDB3; */
+  padding: 3px 4px;
+  font-size: 8pt;
+
+  cursor: pointer;
+}
+
+.chat-window .message .from.me {
+  background-color: #CCFF99;
+  color: gray;
+  cursor: default;
+}
+
+.chat-window .message.system .body {
+  font-style: italic;
+  font-size: 10pt;
+  color: #888;
+}
+
+.chat-window .notifications {
+  font-size: 8pt;
+}
