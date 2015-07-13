@@ -1,6 +1,7 @@
 <div class="chat-window">
   <div ng-messages="connection.$error">
-    <div class="error-message" ng-message="failed">Unable to connect to server!</div>
+    <div class="error-message" ng-message="failed_ws">Unable to connect to server (WebSocket)!</div>
+    <div class="error-message" ng-message="failed_sse">Unable to connect to server (SSE)!</div>
   </div>
   <input type="text" class="nickname" ng-model="nickname" placeholder="{{defaultNickname}}" ng-keypress="nicknameKeypress($event)">
   <div class="conversation">

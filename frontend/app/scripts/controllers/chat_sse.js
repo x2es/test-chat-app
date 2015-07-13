@@ -14,6 +14,11 @@ angular.module('frontendApp')
   .controller('ChatSSECtrl', function ($scope, $controller, ssePort, webSocketEndpoint, sseEndpoint) {
     var endpoint = {};
 
+    function connectionErrorWS() {
+      $scope.connection = { $error: { failed_ws: true } };
+      $scope.$apply();
+    }
+
     var sseUrl = 'http://localhost:' + ssePort + '/';
     var wsUrl = 'ws://localhost:' + ssePort + '/';
 
@@ -21,14 +26,16 @@ angular.module('frontendApp')
     var wsEP = webSocketEndpoint.connect(wsUrl);
     wsEP.setReady('paired', false);
 
-    // TODO
+    wsEP.onError(connectionErrorWS);
+    wsEP.onClose(connectionErrorWS);
+
     sseEP.onOpen(function() {
-      $scope.connection = { $error: { failed: false } };
+      $scope.connection = { $error: { failed_sse: false } };
       $scope.$apply();
     });
 
     sseEP.onError(function(){
-      $scope.connection = { $error: { failed: true } };
+      $scope.connection = { $error: { failed_sse: true } };
       $scope.$apply();
     });
 

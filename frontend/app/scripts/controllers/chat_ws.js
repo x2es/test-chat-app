@@ -13,32 +13,26 @@ angular.module('frontendApp')
 
     var wsUrl = 'ws://localhost:' + wsPort + '/';
 
-    // TODO: DRY
-    function connectWebSocket() {
-      endpoint = webSocketEndpoint.connect(wsUrl);
-
-      endpoint.onError(function(){
-        $scope.connection = { $error: { failed: true } };
-        $scope.$apply();
-      });
-
-      endpoint.onOpen(function() {
-        $scope.connection = { $error: { failed: false } };
-        $scope.$apply();
-      });
-
-      endpoint.onClose(function(){
-        $scope.connection = { $error: { failed: true } };
-        $scope.$apply();
-      });
-
-      endpoint.onMessage(function(msg) {
-        $scope.messages.push(msg);
-        $scope.$apply();
-      });
+    function connectionError() {
+      $scope.connection = { $error: { failed_ws: true } };
+      $scope.$apply();
     }
 
-    connectWebSocket();
+    endpoint = webSocketEndpoint.connect(wsUrl);
+
+    endpoint.onError(connectionError);
+    endpoint.onClose(connectionError);
+
+    endpoint.onOpen(function() {
+      $scope.connection = { $error: { failed_ws: false } };
+      $scope.$apply();
+    });
+
+    endpoint.onMessage(function(msg) {
+      $scope.messages.push(msg);
+      $scope.$apply();
+    });
+
 
     angular.extend(this, $controller('ChatCtrl', { $scope: $scope, endpoint: endpoint }));
   });
