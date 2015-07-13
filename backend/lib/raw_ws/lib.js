@@ -5,6 +5,7 @@ var debug = true;
 var crypto = require('crypto');
 var BufferIterator = require('../helpers.js').BufferIterator;
 
+// TODO: this is amibgous name
 var RawWebSocket = {};
 
 var WS_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
@@ -21,6 +22,7 @@ var LEN_64  = 8;
 
 var FINAL_FRAGMENT  = 1
 var OPCODE_TEXT     = 1;
+var OPCODE_CLOSE    = 8;
 
 RawWebSocket.OPCODE_TEXT = OPCODE_TEXT;
 
@@ -129,17 +131,37 @@ RawWebSocket.parseFrame = function parseFrame(buffer) {
     }
   }
 
-  return ({
-    opcode: opcode,
-    payload: payloadBuffer.toString('utf8')
-  });
+  var frame = {
+    opcode: opcode
+  };
+
+  switch (opcode) {
+    case OPCODE_TEXT:
+      frame.payload = payloadBuffer.toString('utf8');
+      break;
+
+    case OPCODE_CLOSE:
+      var payloadBufferIterator = new BufferIterator(payloadBuffer);
+      frame.code = payloadBuffer.readUIntBE(2);
+      if (payloadBuffer.length > 2)
+        frame.message = payloadBuffer.toString('utf8');
+      else
+        frame.message = '';
+      break;
+
+    default:
+      frame.error = 'opcode unsupported';
+  }
+
+  return frame;
 };
 
 /**
- * @param {String} string
+ * TODO: define DataFrame
+ * @param {DataFrame} frame
  * @return {Buffer}
  */
-RawWebSocket.buildFrame = function buildFrame(string) {
+RawWebSocket.buildFrame = function buildFrame(frame) {
   // calc buffer size
 
   var extensionLength = 0;      // not implemented
@@ -147,7 +169,17 @@ RawWebSocket.buildFrame = function buildFrame(string) {
 
   var lengthRange = LEN_7;
 
-  var payloadLength = Buffer.byteLength(string, 'utf8');
+  var payloadLength;
+  switch (frame.opcode) {
+    case OPCODE_TEXT:
+      payloadLength = Buffer.byteLength(frame.payload, 'utf8');
+      break;
+    case OPCODE_CLOSE:
+      payloadLength = 2 + Buffer.byteLength(frame.message);
+      break
+    default:
+      throw new Error('[RawWebSocket.buildFrame()] unsupported opcode: ' + frame.opcode);
+  }
 
   var payloadLengthFragment = payloadLength;
 
@@ -171,10 +203,8 @@ RawWebSocket.buildFrame = function buildFrame(string) {
   var frameBuffer = new Buffer(frameLength);
 
   var fin     = FINAL_FRAGMENT;
-  var opcode  = OPCODE_TEXT;
+  var opcode  = frame.opcode;
   var maskFl  = MASK_PAYLOAD;
-
-
 
   var buf = (fin << 7) | (opcode);
 
@@ -191,7 +221,15 @@ RawWebSocket.buildFrame = function buildFrame(string) {
     // NOTE: no mask here in server implementation
   }
 
-  bi.write(string);
+  switch (frame.opcode) {
+    case OPCODE_TEXT:
+      bi.write(frame.payload);
+      break;
+    case OPCODE_CLOSE:
+      bi.writeUIntBE(frame.code, 2);
+      bi.write(frame.message);
+      break;
+  }
 
   return frameBuffer;
 };

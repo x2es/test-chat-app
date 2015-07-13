@@ -16,8 +16,8 @@ rwsMiddleware
   .use(srv)
   .onConnection(function(rwsSocket) {
     rwsSocket.onData(function(frame) {
-      if (frame.opcode == 1) {
-        var frameOut = rws.buildFrame(frame.payload);
+      if (frame.opcode === 1) {
+        var frameOut = rws.buildFrame(frame);
         // TODO
         rwsSocket._socket.write(frameOut);
 
@@ -26,8 +26,9 @@ rwsMiddleware
           console.log('-----------')
         }
 
-      } else {
-        console.log('TODO: close connection');
+      } else if (frame.opcode === 8) {
+        var frameOut = rws.buildFrame({ opcode: 8, code: 1000, message: '' });
+        rwsSocket._socket.end(frameOut);
       }
     });
   });

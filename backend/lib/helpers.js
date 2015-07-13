@@ -54,6 +54,14 @@ BufferIterator.prototype.copy = function(target, length) {
   this._offset += l;
 };
 
+/**
+ * @param {String} encoding [optional]
+ */
+// TODO: not tested
+BufferIterator.prototype.toString = function(encoding) {
+  return this._buffer.toString(encoding, this._offset);
+}
+
 
 Helpers.BufferIterator = BufferIterator;
 

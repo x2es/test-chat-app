@@ -2,9 +2,9 @@
    "AutobahnPython": {
       "1.1.2": {
          "behavior": "OK",
-         "behaviorClose": "UNCLEAN",
-         "duration": 1001,
-         "remoteCloseCode": null,
+         "behaviorClose": "OK",
+         "duration": 7,
+         "remoteCloseCode": 1000,
          "reportfile": "autobahnpython_case_1_1_2.json"
       }
    }

@@ -25,7 +25,7 @@ describe('RawWebsocket', function() {
     var payload = 'Hello world!!!';
     var expected = '810e48656c6c6f20776f726c64212121';
 
-    var frameBuffer = rws.buildFrame(payload);
+    var frameBuffer = rws.buildFrame({ opcode: rws.OPCODE_TEXT, payload: payload });
 
     expect(frameBuffer.toString('hex')).equal(expected);
   });
