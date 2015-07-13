@@ -48,7 +48,7 @@ Backend Logic Layer covered by tests partially (see `./spec/*`).
 Front-end
 ---------
 
-Front-end implemented using Angular. Development environment depends on (Yeoman) [http://yeoman.io/] and `grunt-cli`.
+Front-end implemented using Angular. Development environment depends on (Yeoman)[http://yeoman.io/] and `grunt-cli`.
 Recent "compiled" release placed in: `./frontend/dist`. It not depends on yeoman and may be served by any HTTP-server.
 
 Front-end have may work both with single (#/chat-ws) and hybrid (#/chat-sse) chnnels.
