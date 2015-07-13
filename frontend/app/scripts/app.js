@@ -22,11 +22,11 @@ angular
 
   .config(function ($routeProvider) {
     $routeProvider
-      // .when('/about', {
-      //   templateUrl: 'views/about.html',
-      //   controller: 'AboutCtrl',
-      //   controllerAs: 'about'
-      // })
+      .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl',
+        controllerAs: 'about'
+      })
       .when('/chat-ws', {
         templateUrl: 'views/chat.html',
         controller: 'ChatWSCtrl',

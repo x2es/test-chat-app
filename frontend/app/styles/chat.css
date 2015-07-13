@@ -96,3 +96,14 @@ html, body {
 .chat-window .notifications {
   font-size: 9pt;
 }
+
+.bc.photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 75px;
+  margin-bottom: 15px;
+}
+
+.jumbotron .lead {
+  margin-bottom: 25px;
+}

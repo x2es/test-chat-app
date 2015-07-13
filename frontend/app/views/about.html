@@ -1,1 +1,114 @@
-<p>This is the about view.</p>
+<div class="jumbotron">
+  <h1>Konstantin Ivanov</h1>
+  <p class="lead">
+    <!-- <img src="images/yeoman.png" alt="I'm Yeoman"><br> -->
+    <img class="bc photo" src='images/ki_200x200.jpg'><br>
+    <strong>Test task</strong>: simple chat system using self-implemented WebSocket and Server-Sent Events.
+  </p>
+  <p><a class="btn btn-lg btn-success" ng-href="https://github.com/x2es/test-chat-app">GitHub <span class="glyphicon glyphicon-ok"></span></a></p>
+</div>
+
+<div class="row marketing">
+<article class="markdown-body entry-content" itemprop="mainContentOfPage"><h1><a id="user-content-overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h1>
+
+<p>This is sample WebSocket / Server-Sent Event chat application. Github: <a href="https://github.com/x2es/test-chat-app">https://github.com/x2es/test-chat-app</a> </p>
+
+<h2><a id="user-content-transport-layer" class="anchor" href="#transport-layer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Transport Layer</h2>
+
+<p>I have implemented zero-dependency communication libraries:</p>
+
+<ul>
+<li><p>WebSocket implementation (Raw WS) by part of RFC-6455: <code>./backend/lib/raw_ws/*</code>
+It depends only on node's <code>http</code> and <code>crypto</code> libraries.
+It supports <code>opcodes=[1,8]</code> and successfully passes about 100 tests of <code>wstest</code> <a href="http://autobahn.ws/testsuite/">Autobahn TestSuite</a>.
+Recent test reports plased at: <code>./testsuite-raw-ws-autobahn/reports/servers/index.html</code>
+For testing purposes have implemented <code>./echo-servers-raw-ws.js</code> which responds to <code>wstest</code> requests.</p></li>
+<li><p>Server-Sent Events (SSE) implementation: <code>./backend/lib/sse/*</code>
+It is absolutely minimal implementation for chat-app purposes.</p></li>
+</ul>
+
+<p>Both libraries have similar structure: <code>socket/endpoint</code> representation connected to <code>http.Server</code> trough similar <code>middleware</code>.
+It is possible to host HTTP, WebSocket and SSE service on same <code>url:port</code>.</p>
+
+<p>This WebSocket / SSE libraries used in chat servers: </p>
+
+<ul>
+<li><code>./chat-server-sse-raw-ws.js</code> - two channels of communication: SSE for outgoing and WebSocket for incomming data</li>
+<li><code>./chat-server-raw-ws.js</code>. - single channel of communication: WebSocket</li>
+</ul>
+
+<p>Other two chat-server implementation was used as reference and depend on <code>ws</code> library.</p>
+
+<h2><a id="user-content-backend-logic-layer" class="anchor" href="#backend-logic-layer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Backend Logic Layer</h2>
+
+<p>Chat behaviour implemented with low-coupling with transport. It is easy to configure chat-server both for single WebSocket and 
+dual SSE+WebSocket channels.</p>
+
+<p>For this design purposes <code>ChatRoom</code> interacts with abstract <code>Peer</code> representation. <code>Peer</code> relies on <code>AbstractTransportFacade</code> API
+<code>./lib/transport/*</code>. <code>AbstractTransportFacade</code> extended by appropriate facade.</p>
+
+<p>This approach allows to implement hybrid channel transparently for application's logic layer (see usage of <code>HybridChannel</code>).
+Additionally hybrid channel architecture requires mapping ("pairing") incomming and outgoing channels. This is concern of <code>ChannelController</code>.</p>
+
+<p>Backend Logic Layer covered by tests partially (see <code>./spec/*</code>).</p>
+
+<h2><a id="user-content-front-end" class="anchor" href="#front-end" aria-hidden="true"><span class="octicon octicon-link"></span></a>Front-end</h2>
+
+<p>Front-end implemented using Angular. Development environment depends on <a href="http://yeoman.io/">Yeoman</a> and <code>grunt-cli</code>.
+Recent "compiled" release placed in: <code>./frontend/dist</code>. It not depends on yeoman and may be served by any HTTP-server.</p>
+
+<p>Front-end have may work both with single (<a href="#/chat-ws">#/chat-ws</a>) and hybrid (<a href="#/chat-sse">#/chat-sse</a>) chnnels.
+Simple SSE and WebSocket endpoint-services was implemented for this purposes:</p>
+
+<ul>
+<li><code>./frontend/app/scripts/services/sse_endpoint.js</code></li>
+<li><code>./frontend/app/scripts/services/web_socket_endpoint.js</code></li>
+</ul>
+
+<p>Base chat controller <code>./frontend/app/scripts/controllers/chat.js</code> have two extensions: <code>chat_sse.js</code> and <code>chat_ws.js</code>.</p>
+
+<h1><a id="user-content-tdd" class="anchor" href="#tdd" aria-hidden="true"><span class="octicon octicon-link"></span></a>TDD</h1>
+
+<p>From beginning backend was developed using TDD approach. This approach allows to significantly reduce integration issues.
+For example the backend v0.0.1 (<a href="https://github.com/x2es/test-chat-app/tree/v0.0.1">https://github.com/x2es/test-chat-app/tree/v0.0.1</a>) was developped without any 
+integration debugging. I had focused only on specs implementation and was not wasted time on continious debugging. 
+But I have invested gained time to test coverate, which will help on next steps of development.</p>
+
+<p>Another benefit is clarity of development process. At any point you can run <code>npm test</code> and see progress.
+TDD specs is a good reflection of an application backlog. It should be easy to understand progress even by 
+non-programmers, especially by product/project managers.</p>
+
+<p>Implemented Logic Layer at this point was not significantly changed later.</p>
+
+<h1><a id="user-content-backend" class="anchor" href="#backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>Backend</h1>
+
+<pre><code>$ cd backend
+$ npm install
+</code></pre>
+
+<p>Run tests:</p>
+
+<pre><code>$ npm test
+</code></pre>
+
+<p>Run server:</p>
+
+<pre><code>$ npm start
+</code></pre>
+
+<h1><a id="user-content-front-end-1" class="anchor" href="#front-end-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Front-end</h1>
+
+<p>Depends on yeoman and <code>grunt-cli</code></p>
+
+<pre><code>$ cd frontend
+$ npm install
+$ bower install
+</code></pre>
+
+<p>Run server:</p>
+
+<pre><code>$ grunt serve
+</code></pre>
+</article>
+</div>
+ 
