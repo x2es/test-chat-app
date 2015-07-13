@@ -32,7 +32,49 @@ angular.module('frontendApp')
       angular.element('.message-input').trigger('focus');
     }
 
+    function sendTyping() {
+      if ($scope.preventSendingTyping) return;
+      console.log('send typing');
+      $scope.preventSendingTyping = true;
+      setTimeout(function() { $scope.preventSendingTyping = false; }, 3000);    // 3sec - freq limit
+
+      endpoint.send({ from: getNickname(), type: 'typing' });
+    }
+
+    var typersTimers = {};
+    function removeTyper(name) {
+      var i = $scope.typers.indexOf(name);
+      if (i === -1) return;
+      $scope.typers.splice(i,1);
+      $scope.$apply();
+    }
+
+    function typingEvent(msg) {
+      console.log('typingEvent', msg);
+      var typer = msg.from;
+      if ($scope.typers.indexOf(msg.from) === -1) {
+        $scope.typers.push(typer);
+        $scope.$apply();
+      }
+      var timer = typersTimers[typer];
+      if (timer != undefined) clearTimeout(timer);
+      timer = setTimeout(function() {
+        removeTyper(typer);
+        var timer = typersTimers[typer];
+        if (timer != undefined) clearTimeout(timer);
+      }, 5000);
+      typersTimers[typer] = timer;
+    }
+
     $scope.defaultNickname = nickname;
+
+    $scope.noOneTyping = true;
+    $scope.typers = [];
+
+    $scope.$watchCollection('typers', function() {
+      if ($scope.typers.length === 0) $scope.noOneTyping = true;
+      else $scope.noOneTyping = false;
+    });
 
     $scope.messages = [
       { from: getNickname(), body: 'Which difference between #/chat-sse and #/chat-ws?' },
@@ -49,6 +91,16 @@ angular.module('frontendApp')
         el.scrollTop(el[0].scrollHeight); 
       }
     });
+
+    $scope.incommingMessage = function(msg) {
+      if (msg.type === 'typing') {
+        typingEvent(msg);
+        return;
+      }
+
+      $scope.messages.push(msg);
+      $scope.$apply();
+    };
 
     initMessageInput();
 
@@ -68,6 +120,8 @@ angular.module('frontendApp')
     };
 
     $scope.inputKeypress = function(e) {
+      sendTyping();
+
       if (e.altKey === true || e.ctrlKey === true || e.metaKey === true || e.shiftKey === true) return;
       if (e.charCode === 13) {
         $scope.send();

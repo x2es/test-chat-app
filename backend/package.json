@@ -1,6 +1,6 @@
 {
   "name": "chat_app_konstantin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Test task by Konstantin Ivanov",
   "main": "chat-server.js",
   "scripts": {

@@ -35,6 +35,11 @@ ChatRoom.prototype.invite = function (peer) {
           peer.send(MessageFactory.system('Welcome!'));
           chatRoom.broadcast(MessageFactory.system(msg.body + ' have joined!'), { exclude: [ msg.origin ] });
         } 
+
+        if (msg.type === 'typing') {
+          console.log('typing', msg);
+          chatRoom.broadcast(msg, { exclude: [ peer.getUid() ] });
+        }
         return;
       }
 

@@ -29,8 +29,7 @@ angular.module('frontendApp')
     });
 
     endpoint.onMessage(function(msg) {
-      $scope.messages.push(msg);
-      $scope.$apply();
+      $scope.incommingMessage(msg);
     });
 
 

@@ -14,7 +14,7 @@
     <form ng-submit="send()">
       <button class="bt send" type="submit"></button>
       <textarea class="message-input" ng-model="inp_message" placeholder="Whatsup, {{getNickname()}}!" ng-keypress="inputKeypress($event)"></textarea>
-      <div class="notifications">Foo, Bar, Baz, BarBazBar are typing...</div>
+      <div class="notifications" ng-class="{ hidden: noOneTyping }">{{typers.join(', ')}} are typing...</div>
     </form>
   </div>
 </div>

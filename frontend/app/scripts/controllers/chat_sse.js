@@ -49,8 +49,7 @@ angular.module('frontendApp')
         return;
       }
 
-      $scope.messages.push(msg);
-      $scope.$apply();
+      $scope.incommingMessage(msg);
     });
 
 
