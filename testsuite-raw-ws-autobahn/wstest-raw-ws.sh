@@ -12,10 +12,10 @@ echo
 echo "========================"
 echo
 echo Success
-node json-filter.js reports/servers/index.json AutobahnPython.*.behavior="OK" behavior,behaviorClose | tee >(wc -l)
+node json-filter.js reports/servers/index.json AutobahnPython.*.behavior="OK" behavior,behaviorClose
 
 echo Failed
-node json-filter.js reports/servers/index.json AutobahnPython.*.behavior="FAILED" behavior,behaviorClose | wc -l
+node json-filter.js reports/servers/index.json AutobahnPython.*.behavior="FAILED" behavior,behaviorClose
 
 echo
 echo "========================"

@@ -17,12 +17,15 @@ rwsMiddleware
   .onConnection(function(rwsSocket) {
     rwsSocket.onData(function(frame) {
       if (frame.opcode === 1) {
+        console.log('onData/frame.payload.length:', Buffer.byteLength(frame.payload), 'utf8');
         var frameOut = rws.buildFrame(frame);
         // TODO
         rwsSocket._socket.write(frameOut);
 
         if (debug) {
-          console.log('sended back:', frameOut.toString('hex'));
+          var debugOut = frameOut.toString('hex');
+          if (debugOut.length > 300) debugOut = debugOut.substr(0, 200) + ' ...';
+          console.log('sended back:', debugOut);
           console.log('-----------')
         }
 
@@ -30,6 +33,10 @@ rwsMiddleware
         var frameOut = rws.buildFrame({ opcode: 8, code: 1000, message: '' });
         rwsSocket._socket.end(frameOut);
       }
+    })
+    .onUnsupported(function(e) {
+      var frame = rws.buildFrame({ opcode: 8, code: e.code, message: e.message });
+      rwsSocket._socket.end(frame);
     });
   });
 

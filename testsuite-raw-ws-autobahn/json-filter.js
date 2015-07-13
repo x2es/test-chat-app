@@ -55,9 +55,15 @@ var display = parseDisplayFields(showParam);
 
 var report = require('./' + filePath);
 
+var cases = [];
+
 iterator(report, filter.path, filter.value, function(obj, path) {
   var show = [];
   for (var i=0; i<display.length; i++) show.push(obj[display[i]]);
   console.log('[%s]', path.join('.'), show);
+  cases.push(path[1]);
 });
 
+console.log('Cases:');
+console.log(cases);
+console.log('Total:', cases.length);

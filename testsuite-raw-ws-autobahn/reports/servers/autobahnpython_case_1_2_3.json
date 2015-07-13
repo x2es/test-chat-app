@@ -1,14 +1,14 @@
 {
    "agent": "AutobahnPython",
    "behavior": "FAILED",
-   "behaviorClose": "UNCLEAN",
+   "behaviorClose": "OK",
    "case": 11,
    "closedByMe": true,
    "createStats": true,
    "createWirelog": true,
    "description": "Send binary message message with payload of length 126.",
-   "droppedByMe": true,
-   "duration": 2001,
+   "droppedByMe": false,
+   "duration": 1003,
    "expectation": "Receive echo'ed binary message (with payload as sent). Clean close with normal code.",
    "expected": {
       "OK": [
@@ -27,24 +27,27 @@
       "requireClean": true
    },
    "failedByMe": true,
-   "httpRequest": "GET / HTTP/1.1\r\nUser-Agent: AutobahnTestSuite/0.7.1-0.10.4\r\nHost: localhost:9999\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nSec-WebSocket-Key: wKh0n6daDEQjNUQJbcMUwg==\r\nSec-WebSocket-Version: 13\r\n\r\n",
-   "httpResponse": "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: n3ALqspGL7UQXhpR/aJyz/T+YdU=\r\n\r\n",
+   "httpRequest": "GET / HTTP/1.1\r\nUser-Agent: AutobahnTestSuite/0.7.1-0.10.4\r\nHost: localhost:9999\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nSec-WebSocket-Key: tQTNChkU6dP4kpOqHiVDBA==\r\nSec-WebSocket-Version: 13\r\n\r\n",
+   "httpResponse": "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: GxS833MwGj3GtZPwSav+nNlCLU4=\r\n\r\n",
    "id": "1.2.3",
    "isServer": false,
    "localCloseCode": 1001,
    "localCloseReason": "Going Away",
    "received": [],
-   "remoteCloseCode": null,
+   "remoteCloseCode": 1000,
    "remoteCloseReason": null,
    "reportCompressionRatio": false,
    "reportTime": false,
    "result": "Actual events differ from any expected.",
-   "resultClose": "The spec requires the connection to be failed cleanly here",
-   "rxFrameStats": {},
+   "resultClose": "Connection was properly closed",
+   "rxFrameStats": {
+      "8": 1
+   },
    "rxOctetStats": {
+      "4": 1,
       "139": 1
    },
-   "started": "2015-07-12T19:13:09.920Z",
+   "started": "2015-07-13T03:09:04.359Z",
    "trafficStats": null,
    "txFrameStats": {
       "2": 1,
@@ -55,9 +58,9 @@
       "134": 1,
       "240": 1
    },
-   "wasClean": false,
-   "wasCloseHandshakeTimeout": true,
-   "wasNotCleanReason": "peer did not respond (in time) in closing handshake",
+   "wasClean": true,
+   "wasCloseHandshakeTimeout": false,
+   "wasNotCleanReason": null,
    "wasOpenHandshakeTimeout": false,
    "wasServerConnectionDropTimeout": false,
    "wirelog": [
@@ -85,7 +88,7 @@
          2,
          true,
          0,
-         "076559d4",
+         "22092ba9",
          null,
          null,
          false
@@ -94,7 +97,7 @@
          "TO",
          [
             134,
-            "82fe007e076559d4f99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72af99ba72a ..."
+            "82fe007e22092ba9dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557dcf7d557 ..."
          ],
          false
       ],
@@ -114,7 +117,7 @@
          8,
          true,
          0,
-         "f956bda9",
+         "be5d8aa3",
          null,
          null,
          false
@@ -123,9 +126,28 @@
          "TO",
          [
             18,
-            "888cf956bda9fabffac69038da89b821dcd0"
+            "888cbe5d8aa3bdb4cdccd733ed83ff2aebda"
          ],
          false
+      ],
+      [
+         "RO",
+         [
+            4,
+            "880203e8"
+         ]
+      ],
+      [
+         "RF",
+         [
+            2,
+            "0x03e8"
+         ],
+         8,
+         true,
+         0,
+         false,
+         null
       ]
    ]
 }
