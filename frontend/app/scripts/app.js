@@ -40,4 +40,11 @@ angular
       .otherwise({
         redirectTo: '/chat-sse'
       });
+  })
+  .controller("LocationCtrl", function($scope, $location) {
+    $scope.isActive = function(path) {
+      if (path == $location.path()) return true;
+      return false;
+    }
   });
+;
