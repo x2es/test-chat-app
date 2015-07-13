@@ -1,6 +1,5 @@
 
-// TODO: debug stuff
-var debug = true;
+var lg = require('../dev/debug.js').lg;
 
 var crypto = require('crypto');
 var BufferIterator = require('../helpers.js').BufferIterator;
@@ -88,10 +87,8 @@ RawWebSocket.parseFrame = function parseFrame(buffer) {
   var maskFl = (buf & MASK_MASK_FL) >> 7;
   var len = (buf & MASK_LEN);
 
-  if (debug) {
-    console.log('fin: %d; opcode: %d', fin, opcode);
-    console.log('mask: %d; len: %d (buf: %d)', maskFl, len, buf);
-  }
+  lg('fin: %d; opcode: %d', fin, opcode);
+  lg('mask: %d; len: %d (buf: %d)', maskFl, len, buf);
 
   var payloadLength = len;
 
@@ -106,9 +103,7 @@ RawWebSocket.parseFrame = function parseFrame(buffer) {
     // TODO: most significant bit MUST be 0
   }
 
-  if (debug) {
-    console.log('[in] payloadLength:', payloadLength);
-  }
+  lg('[in] payloadLength:', payloadLength);
 
   var mask;
   if (maskFl === 1) {
@@ -117,7 +112,7 @@ RawWebSocket.parseFrame = function parseFrame(buffer) {
 
     bi.copy(mask, 4);
 
-    console.log('[in] mask:', mask.toString('hex'));
+    lg('[in] mask:', mask.toString('hex'));
   }
   else {
     // TODO: fail on mask = 0: client should mask
@@ -127,12 +122,12 @@ RawWebSocket.parseFrame = function parseFrame(buffer) {
 
   var payloadBuffer = new Buffer(payloadLength);
 
-  console.log('[in] payload offset:', bi._offset);
-  console.log('[in:empty] payloadBuffer.length: %d, Buffer.byteLength(payloadBuffer): %d', payloadBuffer.length, Buffer.byteLength(payloadBuffer.toString('utf8')));
+  lg('[in] payload offset:', bi._offset);
+  lg('[in:empty] payloadBuffer.length: %d, Buffer.byteLength(payloadBuffer): %d', payloadBuffer.length, Buffer.byteLength(payloadBuffer.toString('utf8')));
 
   bi.copy(payloadBuffer, payloadLength);
 
-  console.log('[in:masked] payloadBuffer.length: %d, Buffer.byteLength(payloadBuffer): %d', payloadBuffer.length, Buffer.byteLength(payloadBuffer.toString('utf8')));
+  lg('[in:masked] payloadBuffer.length: %d, Buffer.byteLength(payloadBuffer): %d', payloadBuffer.length, Buffer.byteLength(payloadBuffer.toString('utf8')));
 
   if (maskFl === 1) {
     // TODO: unmask
@@ -148,9 +143,7 @@ RawWebSocket.parseFrame = function parseFrame(buffer) {
     }
   }
 
-  console.log('[in:unmasked] payloadBuffer.length: %d, Buffer.byteLength(payloadBuffer): %d', payloadBuffer.length, Buffer.byteLength(payloadBuffer.toString('utf8')));
-
-  // console.log(payloadBuffer.toString('utf8'));
+  lg('[in:unmasked] payloadBuffer.length: %d, Buffer.byteLength(payloadBuffer): %d', payloadBuffer.length, Buffer.byteLength(payloadBuffer.toString('utf8')));
 
   var frame = {
     opcode: opcode
@@ -218,7 +211,7 @@ RawWebSocket.buildFrame = function buildFrame(frame) {
 
   var frameLength = 2 + lengthRange;
 
-  console.log('[out] payloadLength: %d; B.2: %d', payloadLength, payloadLengthFragment);
+  lg('[out] payloadLength: %d; B.2: %d', payloadLength, payloadLengthFragment);
 
   if (MASK_PAYLOAD === 1) frameLength += 4;
 

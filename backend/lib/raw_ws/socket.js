@@ -1,5 +1,5 @@
 
-var debug = true;
+var lg = require('../dev/debug.js').lg;
 
 var MiniFrame = require('../miniframe.js');
 
@@ -33,7 +33,7 @@ RawWSSocket.prototype._bindSocketEvents = function() {
     var events = ['end', 'error', 'close'];
     events.forEach(function(ev) {
       rwsSocket._socket.on(ev, function() {
-        console.log('[socket:' + ev + ']', arguments);
+        lg('[socket:' + ev + ']', arguments);
       });
     });
 
@@ -41,8 +41,8 @@ RawWSSocket.prototype._bindSocketEvents = function() {
       var debugInput = buffer.toString('hex');
       if (debugInput.length > 300) debugInput = debugInput.substr(0, 200) + ' ...';
 
-      console.log('[socket:data] hex:', debugInput);
-      console.log('[socket:data] length:', buffer.length);
+      lg('[socket:data] hex:', debugInput);
+      lg('[socket:data] length:', buffer.length);
 
       try {
         var frame = rws.parseFrame(buffer);
@@ -51,11 +51,7 @@ RawWSSocket.prototype._bindSocketEvents = function() {
         return;
       }
 
-      // if (debug) {
-      //   console.log('frame:', frame);
-      // }
-
-      console.log('rwsSocket._fireData()');
+      lg('rwsSocket._fireData()');
       rwsSocket._fireData(frame);
 
     });

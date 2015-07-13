@@ -1,6 +1,5 @@
 
-var debug = true;
-
+var lg = require('../dev/debug.js').lg;
 var MiniFrame = require('../miniframe.js');
 
 var rws = require('./lib.js');
@@ -29,7 +28,7 @@ RawWSMiddleware.prototype.use = function(server) {
     var events = ['clientError', 'close'];
     events.forEach(function(ev) {
       server.on(ev, function() {
-        console.log('[srv:' + ev + ']', arguments);
+        lg('[srv:' + ev + ']', arguments);
       });
     });
 

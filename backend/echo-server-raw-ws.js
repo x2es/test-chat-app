@@ -1,8 +1,7 @@
 
-// TODO: debug stuff
-var debug = true;
-
 var PORT = process.argv[2] || 11001;
+
+var lg = require('./lib/dev/debug.js').lg;
 
 var http = require('http');
 
@@ -17,17 +16,15 @@ rwsMiddleware
   .onConnection(function(rwsSocket) {
     rwsSocket.onData(function(frame) {
       if (frame.opcode === 1) {
-        console.log('onData/frame.payload.length:', Buffer.byteLength(frame.payload), 'utf8');
+        lg('onData/frame.payload.length:', Buffer.byteLength(frame.payload), 'utf8');
         var frameOut = rws.buildFrame(frame);
         // TODO
         rwsSocket._socket.write(frameOut);
 
-        if (debug) {
-          var debugOut = frameOut.toString('hex');
-          if (debugOut.length > 300) debugOut = debugOut.substr(0, 200) + ' ...';
-          console.log('sended back:', debugOut);
-          console.log('-----------')
-        }
+        var debugOut = frameOut.toString('hex');
+        if (debugOut.length > 300) debugOut = debugOut.substr(0, 200) + ' ...';
+        lg('sended back:', debugOut);
+        lg('-----------')
 
       } else if (frame.opcode === 8) {
         var frameOut = rws.buildFrame({ opcode: 8, code: 1000, message: '' });
