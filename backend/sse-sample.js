@@ -1,7 +1,7 @@
 var PORT = 11001;
 
 var http = require('http');
-var SSEMiddleware = require('./lib/transport/sse_middleware.js');
+var SSEMiddleware = require('./lib/sse/middleware.js');
 
 var sseMiddleware = new SSEMiddleware();
 

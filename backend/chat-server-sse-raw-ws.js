@@ -1,7 +1,7 @@
 var HTTP_PORT = 12001;
 
 var http = require('http');
-var SSEMiddleware = require('./lib/transport/sse_middleware.js');
+var SSEMiddleware = require('./lib/sse/middleware.js');
 
 
 // logic of chat room
@@ -32,15 +32,16 @@ var chatRoom = new ChatRoom();
 
 var channelsController = new ChannelsController();
 
+var server = http.createServer();
+
 /** SSE middleware **/
 
-// TODO: refactor to: middleware.use(server)...
-sseMiddleware
+sseMiddleware.use(server)
   .config('cors', true)
   .onConnection(function(endpoint) {
     // ...
     var hybridChannel = new HybridChannel();
-    hybridChannel.setOutgoing(endpoint);      // ESS as outgoing channel
+    hybridChannel.setOutgoing(endpoint);      // SSE as outgoing channel
     
     var peer = new Peer(hybridChannel);
 
@@ -50,17 +51,8 @@ sseMiddleware
     chatRoom.invite(peer);
   });
 
+
 /** WebSocket middleware **/
-
-var server = http.createServer(function(req, res) {
-  
-  // handle text/event-stream
-  if (sseMiddleware.handle(req, res)) return;
-
-  // other middleware
-  // ...
-});
-
 
 rwsMiddleware.use(server)
   .onConnection(function(rwsSocket) {
@@ -70,6 +62,6 @@ rwsMiddleware.use(server)
 server.listen(HTTP_PORT);
 
 
-console.log('[listen ESS] port', HTTP_PORT);
+console.log('[listen SSE] port', HTTP_PORT);
 console.log('[listen WS] port', HTTP_PORT);
 

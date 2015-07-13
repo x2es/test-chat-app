@@ -1,8 +1,8 @@
-var ESS_PORT = 12001;
+var SSE_PORT = 12001;
 var WS_PORT = 12002;
 
 var http = require('http');
-var SSEMiddleware = require('./lib/transport/sse_middleware.js');
+var SSEMiddleware = require('./lib/sse/middleware.js');
 var WSServer = require('ws').Server;
 
 // logic of chat room
@@ -34,7 +34,9 @@ var channelsController = new ChannelsController();
 
 /** SSE middleware **/
 
-sseMiddleware
+var server = http.createServer();
+
+sseMiddleware.use(server)
   .config('cors', true)
   .onConnection(function(endpoint) {
     // ...
@@ -56,17 +58,8 @@ wss.on('connection', function(ws) {
 });
 
 
-http.createServer(function(req, res) {
-  
-  // handle text/event-stream
-  if (sseMiddleware.handle(req, res)) return;
+server.listen(SSE_PORT);
 
-  // other middleware
-  // ...
-}).listen(ESS_PORT);
-
-
-
-console.log('[listen ESS] port', ESS_PORT);
+console.log('[listen SSE] port', SSE_PORT);
 console.log('[listen WS] port', WS_PORT);
 

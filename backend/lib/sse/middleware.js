@@ -1,5 +1,5 @@
 
-var SSEEndpoint = require('./sse_endpoint.js');
+var SSEEndpoint = require('./endpoint.js');
 
 // TODO: breaking conneciton from both sides
 
@@ -17,6 +17,20 @@ function SSEMiddleware() {
 };
 
 /**
+ * @param {http.Server} server
+ */
+SSEMiddleware.prototype.use = function(server) {
+
+  (function(middelware) {
+    server.on('request', function(req, res) {
+      middelware.handle(req, res);
+    });
+  })(this);
+
+  return this;
+}
+
+/**
  * @param {String} key
  * @param {*} value
  * @returns {SSEMiddleware}
@@ -31,6 +45,7 @@ SSEMiddleware.prototype.config = function(key, value) {
  */
 SSEMiddleware.prototype.onConnection = function(handler) {
   this._connectionHandlers.push(handler);
+  return (this);
 };
 
 /**
