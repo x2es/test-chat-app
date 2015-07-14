@@ -26,8 +26,8 @@ It is possible to host HTTP, WebSocket and SSE service on same `url:port`.
 
 This WebSocket / SSE libraries used in chat servers: 
 
- * `./chat-server-sse-raw-ws.js` - two channels of communication: SSE for outgoing and WebSocket for incomming data
- * `./chat-server-raw-ws.js`. - single channel of communication: WebSocket
+ * `./chat-server-sse-raw-ws.js` - two communication channels: SSE for outgoing and WebSocket for incomming data
+ * `./chat-server-raw-ws.js`. - single communication channel: WebSocket
 
 Other two chat-server implementation was used as reference and depend on `ws` library.
 
