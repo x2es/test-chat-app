@@ -1,0 +1,185 @@
+{
+   "agent": "AutobahnPython",
+   "behavior": "FAILED",
+   "behaviorClose": "WRONG CODE",
+   "case": 7,
+   "closedByMe": true,
+   "createStats": true,
+   "createWirelog": true,
+   "description": "Send text message message with payload of length 65536.",
+   "droppedByMe": false,
+   "duration": 30,
+   "expectation": "Receive echo'ed text message (with payload as sent). Clean close with normal code.",
+   "expected": {
+      "OK": [
+         [
+            "message",
+            "**************************************************************** ...",
+            false
+         ]
+      ]
+   },
+   "expectedClose": {
+      "closeCode": [
+         1000
+      ],
+      "closedByMe": true,
+      "requireClean": true
+   },
+   "failedByMe": true,
+   "httpRequest": "GET / HTTP/1.1\r\nUser-Agent: AutobahnTestSuite/0.7.1-0.10.4\r\nHost: localhost:9999\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nSec-WebSocket-Key: T/lFj4Yamk361bFCclpRiw==\r\nSec-WebSocket-Version: 13\r\n\r\n",
+   "httpResponse": "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: Ux/CoQBSpOQZiP4376qhd5ohXrE=\r\n\r\n",
+   "id": "1.1.7",
+   "isServer": false,
+   "localCloseCode": 1002,
+   "localCloseReason": "invalid close code 0",
+   "received": [
+      [
+         "message",
+         "**************************************************************** ...",
+         false
+      ]
+   ],
+   "remoteCloseCode": 0,
+   "remoteCloseReason": "[object Object]",
+   "reportCompressionRatio": false,
+   "reportTime": false,
+   "result": "Actual events differ from any expected.",
+   "resultClose": "The close code should have been 1000 or empty",
+   "rxFrameStats": {
+      "1": 1,
+      "8": 1
+   },
+   "rxOctetStats": {
+      "139": 1,
+      "1664": 1,
+      "19941": 1,
+      "65536": 1
+   },
+   "started": "2015-07-13T03:09:02.287Z",
+   "trafficStats": null,
+   "txFrameStats": {
+      "1": 1,
+      "8": 1
+   },
+   "txOctetStats": {
+      "28": 1,
+      "240": 1,
+      "65550": 1
+   },
+   "wasClean": true,
+   "wasCloseHandshakeTimeout": false,
+   "wasNotCleanReason": null,
+   "wasOpenHandshakeTimeout": false,
+   "wasServerConnectionDropTimeout": false,
+   "wirelog": [
+      [
+         "TO",
+         [
+            240,
+            "474554202f20485454502f312e310d0a557365722d4167656e743a204175746f6261686e5465737453756974652f302e372e312d302e31302e340d0a486f7374 ..."
+         ],
+         false
+      ],
+      [
+         "RO",
+         [
+            139,
+            "485454502f312e31203130312057656220536f636b65742050726f746f636f6c2048616e647368616b650d0a557067726164653a20576562536f636b65740d0a ..."
+         ]
+      ],
+      [
+         "TF",
+         [
+            65536,
+            "**************************************************************** ..."
+         ],
+         1,
+         true,
+         0,
+         "f4153c56",
+         null,
+         null,
+         false
+      ],
+      [
+         "TO",
+         [
+            65550,
+            "81ff0000000000010000f4153c56de3f167cde3f167cde3f167cde3f167cde3f167cde3f167cde3f167cde3f167cde3f167cde3f167cde3f167cde3f167cde3f ..."
+         ],
+         false
+      ],
+      [
+         "KL",
+         10
+      ],
+      [
+         "RO",
+         [
+            65536,
+            "817f00000000000154482a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a ..."
+         ]
+      ],
+      [
+         "RO",
+         [
+            1664,
+            "bd205866efbfbd225a63efbfbd205866efbfbd225a63efbfbd205866efbfbd225a63efbfbd205866efbfbd225a63efbfbd205866efbfbd225a63efbfbd205866 ..."
+         ]
+      ],
+      [
+         "RO",
+         [
+            19941,
+            "5a63efbfbd205866efbfbd225a63efbfbd205866efbfbd225a63efbfbd205866efbfbd225a63efbfbd205866efbfbd225a63efbfbd205866efbfbd225a63efbf ..."
+         ]
+      ],
+      [
+         "RF",
+         [
+            87112,
+            "**************************************************************** ..."
+         ],
+         1,
+         true,
+         0,
+         false,
+         null
+      ],
+      [
+         "RF",
+         [
+            17,
+            "\u0000\u0000[object Object]"
+         ],
+         8,
+         true,
+         0,
+         false,
+         null
+      ],
+      [
+         "TF",
+         [
+            22,
+            "0x03ea696e76616c696420636c6f736520636f64652030"
+         ],
+         8,
+         true,
+         0,
+         "cf483fcd",
+         null,
+         null,
+         false
+      ],
+      [
+         "TO",
+         [
+            28,
+            "8896cf483fcdcca256a3b92953a4ab685ca1a03b5aedac275ba8ef78"
+         ],
+         false
+      ]
+   ]
+}
