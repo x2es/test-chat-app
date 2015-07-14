@@ -81,7 +81,7 @@ angular.module('frontendApp')
     $scope.messages = [
       { from: getNickname(), body: 'Which difference between #/chat-sse and #/chat-ws?' },
       { from: 'Konstantin Ivanov', body: 'I have implemented two versions of chat-server.\n#/chat-see comunicates with server using two channel: Server-Sent Events for incomming and WebSocket for outgoing data.' },
-      { from: 'Konstantin Ivanov', body: '#/chat-ws use WebSocket for sending data in both directions.' },
+      { from: 'Konstantin Ivanov', body: '#/chat-ws use WebSocket for exchange data in both directions.' },
       { from: getNickname(), body: 'My name is too weird..' },
       { from: 'Konstantin Ivanov', body: 'Just type another one!' },
       { from: 'Konstantin Ivanov', body: 'Hint, you may click on my name to put it into textbox.' },
