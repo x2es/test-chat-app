@@ -95,6 +95,7 @@ html, body {
 
 .chat-window .notifications {
   font-size: 9pt;
+  color: #888;
 }
 
 .bc.photo {

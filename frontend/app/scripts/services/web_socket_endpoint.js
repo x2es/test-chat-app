@@ -3,22 +3,24 @@
 (function(angular) {
 
   /**
+   * NOTE:  ws object may be specified later
+   *        it allows to accomulate outgoing messages queue
+   *        before actual socket builded
+   *        This feature used for init ws connection on events
+   *        in sse connection.
+   *
    * @constructor
-   * @param {WebSocket} ws
+   * @param {WebSocket} ws [optional]
    */
   function WSEndpoint(ws) {
     this._ws = ws;
     this._queue = [];
     this._queueSys = [];
 
-    this._readyState = {
-      open: false
-      // may be extended by outside
-    };
-
+    this._resetRedyState();
     this.setReady('open', false);
 
-    this._bindWSEvents();
+    if (this._ws != undefined) this._bindWSEvents();
   }
 
   MiniFrame.events(WSEndpoint, [
@@ -30,6 +32,23 @@
      */
     'message'
   ]);
+
+  WSEndpoint.prototype._resetRedyState = function() {
+    this._readyState = {
+      open: false
+      // may be extended by outside
+    };
+  }
+
+  WSEndpoint.prototype.connect = function(url) {
+    this._ws = new WebSocket(url);
+    this._bindWSEvents();
+  };
+
+  WSEndpoint.prototype.close = function() {
+    this._ws.close();
+    this._resetRedyState();
+  }
 
   WSEndpoint.prototype._bindWSEvents = function() {
     (function(endpoint, ws) {
@@ -122,6 +141,14 @@
    */
   WSEndpointFactory.prototype.connect = function(url) {
     var wsEndpoint = new WSEndpoint(new WebSocket(url));
+    return (wsEndpoint);
+  };
+
+  /**
+   * @return {WSEndpoint}
+   */
+  WSEndpointFactory.prototype.build = function() {
+    var wsEndpoint = new WSEndpoint();
     return (wsEndpoint);
   };
 

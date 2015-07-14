@@ -10,13 +10,16 @@ function HybridChannel() {
   var that = this;
 
   this._onMessageHandlersBuffer = [];
+  this._onDisconnectedHandlersBuffer = [];
 
   this._outgoingEndpoint = { send: nop };
   this._incommingEndpoint = { 
     onMessage: function(handler) {
       that._onMessageHandlersBuffer.push(handler);
     },
-    onDisconnected: nop
+    onDisconnected: function(handler) {
+      that._onDisconnectedHandlersBuffer.push(handler);
+    }
   };
 }
 
@@ -47,6 +50,11 @@ HybridChannel.prototype.setIncomming = function(endpoint) {
     this._incommingEndpoint.onMessage(this._onMessageHandlersBuffer[i]);
   }
   delete this._onMessageHandlersBuffer;
+
+  for (var i=0; i<this._onDisconnectedHandlersBuffer.length; i++) {
+    this._incommingEndpoint.onDisconnected(this._onDisconnectedHandlersBuffer[i]);
+  }
+  delete this._onDisconnectedHandlersBuffer;
 };
 
 module.exports = HybridChannel;

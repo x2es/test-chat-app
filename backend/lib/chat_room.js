@@ -11,6 +11,7 @@ function peerComparator(item, query) {
 
 function ChatRoom() {
   this._peers = [];
+  this._namesOnPeers = {};
 }
 
 /**
@@ -24,25 +25,26 @@ ChatRoom.prototype.invite = function (peer) {
   (function(chatRoom, peer) {
     peer.onDisconnected(function() {
       chatRoom._dismiss(peer);
+      chatRoom.broadcast(MessageFactory.system(chatRoom._namesOnPeers[peer.getUid()] + ' has left!'));
     });
 
     peer.onMessage(function(msg) {
-      msg.origin = peer.getUid();
-
       // TODO: make massage router
-      if (msg.type != undefined) {
+      if (msg.type != undefined && msg.type !== 'typing') {
         if (msg.type === 'name') {
+          chatRoom._namesOnPeers[peer.getUid()] = msg.body;
           peer.send(MessageFactory.system('Welcome!'));
-          chatRoom.broadcast(MessageFactory.system(msg.body + ' have joined!'), { exclude: [ msg.origin ] });
+          chatRoom.broadcast(MessageFactory.system(msg.body + ' have joined!'), { exclude: [ peer.getUid() ] });
         } 
-
-        if (msg.type === 'typing') {
-          chatRoom.broadcast(msg, { exclude: [ peer.getUid() ] });
-        }
         return;
       }
 
-      chatRoom.broadcast(msg, { exclude: [ msg.origin ] });
+      var oldName = chatRoom._namesOnPeers[peer.getUid()];
+      if (oldName != undefined && msg.from != undefined && oldName !== msg.from) {
+        chatRoom._namesOnPeers[peer.getUid()] = msg.from;
+        chatRoom.broadcast(MessageFactory.system(oldName + ' have changed name to ' + msg.from), { exclude: [ peer.getUid() ] });
+      }
+      chatRoom.broadcast(msg, { exclude: [ peer.getUid() ] });
     });
   })(this, peer);
 };

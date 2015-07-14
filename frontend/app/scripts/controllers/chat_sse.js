@@ -23,8 +23,7 @@ angular.module('frontendApp')
     var wsUrl = 'ws:' + sseURI;
 
     var sseEP = sseEndpoint.connect(sseUrl);
-    var wsEP = webSocketEndpoint.connect(wsUrl);
-    wsEP.setReady('paired', false);
+    var wsEP = webSocketEndpoint.build();
 
     wsEP.onError(connectionErrorWS);
     wsEP.onClose(connectionErrorWS);
@@ -35,6 +34,7 @@ angular.module('frontendApp')
     });
 
     sseEP.onError(function(){
+      wsEP.close();
       $scope.connection = { $error: { failed_sse: true } };
       $scope.$apply();
     });
@@ -43,9 +43,12 @@ angular.module('frontendApp')
 
       // TODO: care about lifecycle of this event
       if (msg.type != undefined && msg.type === 'pair') {
+        if (wsEP.isReady()) return;
+
+        wsEP.connect(wsUrl);
+
         wsEP.send(msg, { system: true });
         // TODO: wait success answer before .setReady('paired')
-        wsEP.setReady('paired');
         return;
       }
 
