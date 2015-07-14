@@ -1,4 +1,3 @@
-![](https://mc.yandex.ru/watch/31418233)
 
 Overview
 ========
