@@ -31,6 +31,8 @@ This WebSocket / SSE libraries used in chat servers:
 
 Other two chat-server implementation was used as reference and depend on `ws` library.
 
+For production deployment used `./chat-server-hybrid.js`.
+It allows to communicate between chats connected to different types of channels (eg. #/chat-sse with #/chat-ws).
 
 Backend Logic Layer
 -------------------
